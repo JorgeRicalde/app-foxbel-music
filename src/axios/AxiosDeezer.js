@@ -2,21 +2,22 @@ import axios from 'axios';
 
 export const AxiosDeezer = axios.create({
   baseURL: 'https://cors-anywhere.herokuapp.com/https://api.deezer.com',
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    accept: 'application/json',
-  },
 });
 
 AxiosDeezer.interceptors.request.use(
   (config) => {
+    config.data = {
+      ...config.data,
+      access_token: 'frdgMVqeEINmHIXdsyCJWlYdDHGFOoBSpdvzgzmR6TEZHeICsiY',
+    };
     return config;
   },
   () => null
 );
 AxiosDeezer.interceptors.response.use(
   ({ data }) => {
-    return data;
+    if (data['error'] == undefined) return data;
+    return null;
   },
   () => null
 );
