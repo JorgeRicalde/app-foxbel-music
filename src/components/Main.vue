@@ -13,7 +13,7 @@
               <v-container fluid>
                 <v-row>
                   <v-col cols="4" class="mx-0 px-0">
-                    <v-img max-width="100%" :src="result.album.cover_medium">
+                    <v-img height="100%" :src="result.album.cover_medium">
                     </v-img>
                   </v-col>
                   <v-col cols="8" class="mx-0 px-0">
@@ -35,7 +35,7 @@
                           >
                           </v-list-item-subtitle>
                           <v-card-text>
-                            <div>Whitehaven Beach</div>
+                            <div><lorem-ipsum add="60w" /></div>
                           </v-card-text>
                         </v-list-item-content>
                       </v-list-item>
@@ -95,10 +95,15 @@
 import { useSearchStore } from '@/store/SearchStore';
 import { useMusicPlayerStore } from '@/store/MusicPlayerStore';
 import { toRefs } from 'vue-demi';
+import LoremIpsum from 'vue-lorem-ipsum';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Main',
+
+  components: {
+    LoremIpsum,
+  },
 
   mounted() {
     this.setReproduct(this.$refs.reproductor);

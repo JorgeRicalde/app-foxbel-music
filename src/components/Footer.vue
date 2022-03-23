@@ -11,7 +11,11 @@
         <v-list-item>
           <v-list-item-content v-if="music">
             <v-list-item-title
-              v-text="`${music.title} - ${formatCurrentTime}/${formatMaxTime}`"
+              v-text="
+                `${musicIndex + 1}/${musicCount} - ${
+                  music.title
+                } - ${formatCurrentTime}/${formatMaxTime}`
+              "
             >
             </v-list-item-title>
             <v-list-item-subtitle v-text="music.artist.name">
@@ -20,6 +24,14 @@
           <v-list-item-content v-else>
             <v-list-item-title v-text="'Añada nueva musica para reproducir'">
             </v-list-item-title>
+            <v-list-item-subtitle
+              v-text="
+                `La lista de reproduccion tiene ${musicCount} musica${
+                  musicCount > 1 ? 's' : ''
+                }`
+              "
+            >
+            </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-icon>
@@ -92,6 +104,8 @@ export default {
       music,
       isPlay,
       timePorcentage,
+      musicIndex,
+      musicCount,
       volume,
       formatCurrentTime,
       formatMaxTime,
@@ -110,6 +124,8 @@ export default {
       music,
       isPlay,
       volume,
+      musicIndex,
+      musicCount,
       formatCurrentTime,
       formatMaxTime,
       pause,

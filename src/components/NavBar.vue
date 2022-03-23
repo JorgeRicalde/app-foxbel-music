@@ -19,6 +19,9 @@
             solo
             return-object
           >
+            <template v-slot:append-item>
+              <div v-intersect="endIntersect" />
+            </template>
             <template v-slot:no-data>
               <v-list-item>
                 <v-list-item-title>
@@ -90,31 +93,33 @@ export default {
     const store = useSearchStore();
     const { playMusic } = useMusicPlayerStore();
     const { results, isLoading } = toRefs(store);
-    const { searchResults, setSelect } = store;
+    const { searchResults, searchMoreResults } = store;
 
     return {
       results,
       isLoading,
       searchResults,
-      setSelect,
       playMusic,
+      searchMoreResults,
     };
   },
 
   data: () => ({
     model: null,
     search: null,
-    tab: null,
   }),
 
+  methods: {
+    endIntersect(entries, observer, isIntersecting) {
+      if (isIntersecting) {
+        this.searchMoreResults();
+      }
+    },
+  },
   watch: {
     model(value) {
       if (value != null) {
-        this.tab = 0;
-        this.setSelect(value);
         this.playMusic(value);
-      } else {
-        this.tab = null;
       }
     },
     search(value) {

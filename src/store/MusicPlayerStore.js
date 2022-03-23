@@ -28,6 +28,7 @@ export const useMusicPlayerStore = defineStore('musicPlayer', {
     formatCurrentTime: (state) => formatTime(state.currentTime),
     formatMaxTime: (state) => formatTime(state.maxTime),
     timePorcentage: (state) => (state.currentTime / state.maxTime) * 100,
+    musicCount: (state) => state.musicList.length,
   },
   actions: {
     setReproduct(value) {
