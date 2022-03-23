@@ -1,41 +1,32 @@
 <template>
   <v-app>
-    <NavBar :items2="['sadas', 'asd']" />
+    <NavBar />
     <SideBar />
-    <v-main>
-      <HelloWorld />
-    </v-main>
+    <Main />
+    <Footer />
   </v-app>
 </template>
 
 <script>
-import { AxiosDeezer } from './axios/AxiosDeezer';
 import NavBar from './components/NavBar';
 import SideBar from './components/SideBar';
-import HelloWorld from './components/HelloWorld';
+import Main from './components/Main';
+import Footer from './components/Footer';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    Main,
     SideBar,
     NavBar,
+    Footer,
   },
 
-  data: () => ({
-    //
-  }),
+  data: () => ({}),
 
-  mounted() {
-    //this.getArtist(1);
-  },
+  mounted() {},
 
-  methods: {
-    async getArtist(id = 0) {
-      const artist = await AxiosDeezer.get(`artist/${id}`);
-      console.log(artist);
-    },
-  },
+  methods: {},
 };
 </script>

@@ -5,7 +5,7 @@
         <v-col>
           <v-autocomplete
             v-model="model"
-            :items="items"
+            :items="results"
             :loading="isLoading"
             :search-input.sync="search"
             chips
@@ -13,10 +13,11 @@
             hide-details
             hide-selected
             append-icon="mdi-magnify"
-            item-text="name"
-            item-value="symbol"
+            item-text="title"
+            item-value="id"
             label="Buscar"
             solo
+            return-object
           >
             <template v-slot:no-data>
               <v-list-item>
@@ -34,20 +35,21 @@
                 v-on="on"
               >
                 <v-icon left> mdi-music-note </v-icon>
-                <span v-text="item.name"></span>
+                <span v-text="item.title"></span>
               </v-chip>
             </template>
             <template v-slot:item="{ item }">
-              <v-list-item-avatar
-                color="indigo"
-                class="text-h5 font-weight-light white--text"
-              >
-                {{ item.name.charAt(0) }}
-              </v-list-item-avatar>
+              <v-img
+                max-height="40"
+                max-width="40"
+                class="mx-2"
+                :src="item.album.cover_small"
+              ></v-img>
+
               <v-list-item-content>
-                <v-list-item-title v-text="item.name"></v-list-item-title>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
                 <v-list-item-subtitle
-                  v-text="item.symbol"
+                  v-text="item.artist.name"
                 ></v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
@@ -58,8 +60,10 @@
         </v-col>
         <v-col align="end">
           <div class="usuario-cuenta">
-            <v-icon color="#E86060">mdi-account</v-icon>
-            Jorge Ricalde {{ this.items2 }}
+            <v-icon color="#E86060">mdi-github</v-icon>
+            <a href="https://github.com/JorgeRicalde" target="_blank">
+              @JorgeRicalde</a
+            >
           </div>
         </v-col>
       </v-row>
@@ -69,54 +73,52 @@
 
 <style>
 .usuario-cuenta {
-  font-family: 'Quicksand';
   font-style: normal;
-  font-weight: 400;
   font-size: 16px;
-  line-height: 20px;
 }
 </style>
 
 <script>
+import { useSearchStore } from '@/store/SearchStore';
+import { toRefs } from 'vue-demi';
+import { useMusicPlayerStore } from '@/store/MusicPlayerStore';
+
 export default {
   name: 'NavBar',
 
-  props: {
-    items2: Array,
+  setup() {
+    const store = useSearchStore();
+    const { playMusic } = useMusicPlayerStore();
+    const { results, isLoading } = toRefs(store);
+    const { searchResults, setSelect } = store;
+
+    return {
+      results,
+      isLoading,
+      searchResults,
+      setSelect,
+      playMusic,
+    };
   },
 
   data: () => ({
-    isLoading: false,
-    items: [],
     model: null,
     search: null,
     tab: null,
   }),
 
-  mounted() {},
-
-  methods: {},
-
   watch: {
-    model(val) {
-      if (val != null) this.tab = 0;
-      else this.tab = null;
+    model(value) {
+      if (value != null) {
+        this.tab = 0;
+        this.setSelect(value);
+        this.playMusic(value);
+      } else {
+        this.tab = null;
+      }
     },
-    search(val) {
-      // Items have already been loaded
-      if (this.items.length > 0) return;
-      console.log(val);
-      this.isLoading = true;
-      // Lazily load input items
-      fetch('https://api.coingecko.com/api/v3/coins/list')
-        .then((res) => res.clone().json())
-        .then((res) => {
-          this.items = res;
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => (this.isLoading = false));
+    search(value) {
+      this.searchResults(value);
     },
   },
 };

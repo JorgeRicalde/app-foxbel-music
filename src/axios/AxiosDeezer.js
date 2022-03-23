@@ -6,10 +6,6 @@ export const AxiosDeezer = axios.create({
 
 AxiosDeezer.interceptors.request.use(
   (config) => {
-    config.data = {
-      ...config.data,
-      access_token: 'frdgMVqeEINmHIXdsyCJWlYdDHGFOoBSpdvzgzmR6TEZHeICsiY',
-    };
     return config;
   },
   () => null
