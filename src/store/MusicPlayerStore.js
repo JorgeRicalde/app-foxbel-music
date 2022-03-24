@@ -52,7 +52,6 @@ export const useMusicPlayerStore = defineStore('musicPlayer', {
     },
     play() {
       if (!this.reproduct || !this.music) {
-        this.reproduct.src = '';
         return;
       }
       if (!this.isPlay && this.musicIndex < this.musicList.length) {
