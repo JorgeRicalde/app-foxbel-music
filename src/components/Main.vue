@@ -59,7 +59,13 @@
       </v-row>
       <v-row>
         <v-col>
-          <h2 class="ml-5 pl-5" style="color: #e86060">Resultados</h2>
+          <h2
+            class="ml-5 pl-5"
+            style="color: #e86060"
+            v-text="
+              `${results.length} Resultado${results.length == 1 ? '' : 's'} `
+            "
+          ></h2>
         </v-col>
       </v-row>
       <v-row>

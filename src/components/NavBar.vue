@@ -8,10 +8,8 @@
             :items="results"
             :loading="isLoading"
             :search-input.sync="search"
-            chips
             clearable
             hide-details
-            hide-selected
             append-icon="mdi-magnify"
             item-text="title"
             item-value="id"
@@ -107,6 +105,7 @@ export default {
   data: () => ({
     model: null,
     search: null,
+    timer: null,
   }),
 
   methods: {
@@ -123,7 +122,13 @@ export default {
       }
     },
     search(value) {
-      this.searchResults(value);
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+      this.timer = setTimeout(() => {
+        this.searchResults(value);
+      }, 800);
     },
   },
 };
